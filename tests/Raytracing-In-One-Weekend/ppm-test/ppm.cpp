@@ -1,3 +1,6 @@
+#include "../../../source/Raytracing-In-One-Weekend/vec3.h"
+#include "../../../source/Raytracing-In-One-Weekend/colour.h"
+
 #include <iostream>
 
 int main() 
@@ -17,17 +20,8 @@ int main()
         std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush; // Progress indicator
         for (int i = 0; i < image_width; ++i) 
         {
-            // Colour values for each iteration (range 0-1)
-            auto r = double(i) / (image_width - 1);
-            auto g = double(j) / (image_height - 1);
-            auto b = 0.25;
-
-            // Values transformed to 0-256 RGB range
-            int ir = static_cast<int>(255.999 * r);
-            int ig = static_cast<int>(255.999 * g);
-            int ib = static_cast<int>(255.999 * b);
-
-            std::cout << ir << ' ' << ig << ' ' << ib << '\n';
+            color pixel_color(double(i) / (image_width - 1), double(j) / (image_height - 1), 0.25);
+            write_color(std::cout, pixel_color);
         }
     }
     std::cerr << "\nDone.\n"; 
