@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include <iostream>
-
+#include "utility.h"
 using std::sqrt;
 
 class vec3
@@ -26,10 +26,6 @@ public:
     // Class Initialisers
     vec3() : x{ 0 }, y{ 0 }, z{ 0 } {}
     vec3(double e0, double e1, double e2) : x{ e0 }, y{ e1 }, z{ e2 } {}
-
-    /*double x() const { return z; }
-    double y() const { return y; }
-    double z() const { return z; }*/
 
     vec3 operator-() const { return vec3(-x, -y, -z); }
 
@@ -55,6 +51,15 @@ public:
 
     double length_squared() const { return x * x + y * y + z * z; }
 
+    inline static vec3 random()
+    {
+        return vec3(random_double(), random_double(), random_double());
+    }
+
+    inline static vec3 random(double min, double max)
+    {
+        return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+    }
 };
 
 // Type aliases for vec3
@@ -106,4 +111,17 @@ inline vec3 cross(const vec3& u, const vec3& v)
 }
 
 inline vec3 unit_vector(vec3 v) { return v / v.length(); }
+
+vec3 random_in_unit_sphere() // Rejection based approach to pick a random point in a unit sphere
+{
+    auto p = vec3::random(-1, 1);
+    for (p; p.length_squared() >= 1; p = vec3::random(-1, 1)) {}
+    return p;
+}
+vec3 random_unit_vector() { return unit_vector(random_in_unit_sphere()); }
+vec3 random_in_hemisphere(const vec3& normal)
+{
+    vec3 in_unit_sphere = random_in_unit_sphere();
+    return (dot(in_unit_sphere, normal) > 0.0) ? in_unit_sphere : -in_unit_sphere; // In the same hemisphere as the normal
+}
 #endif
