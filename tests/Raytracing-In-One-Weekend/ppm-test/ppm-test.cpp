@@ -20,8 +20,8 @@ int main()
         std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush; // Progress indicator
         for (int i = 0; i < image_width; ++i) 
         {
-            color pixel_color(double(i) / (image_width - 1), double(j) / (image_height - 1), 0.25); // Sets pixel colour
-            write_color(std::cout, pixel_color); // Writes colour to output buffer
+            colour pixel_colour(double(i) / (image_width - 1), double(j) / (image_height - 1), 0.25); // Sets pixel colour
+            write_colour(std::cout, pixel_colour); // Writes colour to output buffer
         }
     }
     std::cerr << "\nDone.\n"; 

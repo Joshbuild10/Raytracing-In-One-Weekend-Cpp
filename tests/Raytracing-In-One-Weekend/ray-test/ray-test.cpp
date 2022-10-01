@@ -5,11 +5,11 @@
 #include <iostream>
 
 
-color ray_color(const ray& r) 
+colour ray_colour(const ray& r) 
 {
     vec3 unit_direction = unit_vector(r.direction()); // Normalises the vector
-    auto t = 0.5 * (unit_direction.y() + 1.0); // Scales to range 0 <= t <= 1
-    return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0); // Linear interpolation algorithm
+    auto t = 0.5 * (unit_direction.y + 1.0); // Scales to range 0 <= t <= 1
+    return (1.0 - t) * colour(1.0, 1.0, 1.0) + t * colour(0.5, 0.7, 1.0); // Linear interpolation algorithm
 }
 
 int main()
@@ -43,8 +43,8 @@ int main()
             auto u = double(i) / (image_width - 1);
             auto v = double(j) / (image_height - 1);
             ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
-            color pixel_color = ray_color(r);
-            write_color(std::cout, pixel_color); // Writes colour to output buffer
+            colour pixel_colour = ray_colour(r);
+            write_colour(std::cout, pixel_colour); // Writes colour to output buffer
         }
     }
     std::cerr << "\nDone.\n";

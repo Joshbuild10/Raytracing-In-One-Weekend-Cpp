@@ -17,18 +17,18 @@ double hit_sphere(const point3& center, double radius, const ray& r)
     return (discriminant < 0) ? -1.0 : (-half_b - sqrt(discriminant)) / a;
 }
 
-color ray_color(const ray& r)
+colour ray_colour(const ray& r)
 {
     auto t = hit_sphere(point3(0, 0, -1), 0.5, r);
     if (t > 0.0) // If point on sphere
     {
         vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1)); // Computes surface normal
-        return 0.5 * (N + color(1, 1, 1)); // Scales normal to colour range
+        return 0.5 * (N + colour(1, 1, 1)); // Scales normal to colour range
     }
 
     vec3 unit_direction = unit_vector(r.direction()); // Normalises the vector
-    t = 0.5 * (unit_direction.y() + 1.0); // Scales to range 0 <= t <= 1
-    return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0); // Linear interpolation algorithm
+    t = 0.5 * (unit_direction.y + 1.0); // Scales to range 0 <= t <= 1
+    return (1.0 - t) * colour(1.0, 1.0, 1.0) + t * colour(0.5, 0.7, 1.0); // Linear interpolation algorithm
 }
 
 int main()
@@ -62,8 +62,8 @@ int main()
             auto u = double(i) / (image_width - 1);
             auto v = double(j) / (image_height - 1);
             ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
-            color pixel_color = ray_color(r);
-            write_color(std::cout, pixel_color); // Writes colour to output buffer
+            colour pixel_colour = ray_colour(r);
+            write_colour(std::cout, pixel_colour); // Writes colour to output buffer
         }
     }
     std::cerr << "\nDone.\n";
