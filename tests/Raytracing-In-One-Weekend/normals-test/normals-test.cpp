@@ -8,12 +8,13 @@
 double hit_sphere(const point3& center, double radius, const ray& r)
 {
     vec3 oc = r.origin() - center;
-    auto a = dot(r.direction(), r.direction());
-    auto b = 2.0 * dot(oc, r.direction());
-    auto c = dot(oc, oc) - radius * radius;
-    auto discriminant = b * b - 4 * a * c;
+    auto a = r.direction().length_squared();
+    auto half_b = dot(oc, r.direction());
+    auto c = oc.length_squared() - radius * radius;
+    auto discriminant = half_b * half_b - a * c;
+
     // If point not on sphere return -1, else return solution of the quadratic
-    return (discriminant < 0) ? -1.0 : (-b - sqrt(discriminant)) / (2.0 * a);
+    return (discriminant < 0) ? -1.0 : (-half_b - sqrt(discriminant)) / a;
 }
 
 color ray_color(const ray& r)
@@ -24,6 +25,7 @@ color ray_color(const ray& r)
         vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1)); // Computes surface normal
         return 0.5 * (N + color(1, 1, 1)); // Scales normal to colour range
     }
+
     vec3 unit_direction = unit_vector(r.direction()); // Normalises the vector
     t = 0.5 * (unit_direction.y() + 1.0); // Scales to range 0 <= t <= 1
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0); // Linear interpolation algorithm
