@@ -60,6 +60,12 @@ public:
     {
         return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
     }
+    bool near_zero() const
+	{
+        // Return true if the vector is close to zero in all dimensions.
+        const auto s = 1e-8;
+        return (fabs(x) < s) && (fabs(y) < s) && (fabs(z) < s);
+    }
 };
 
 // Type aliases for vec3
@@ -118,10 +124,16 @@ vec3 random_in_unit_sphere() // Rejection based approach to pick a random point 
     for (p; p.length_squared() >= 1; p = vec3::random(-1, 1)) {}
     return p;
 }
+
 vec3 random_unit_vector() { return unit_vector(random_in_unit_sphere()); }
+
 vec3 random_in_hemisphere(const vec3& normal)
 {
     vec3 in_unit_sphere = random_in_unit_sphere();
     return (dot(in_unit_sphere, normal) > 0.0) ? in_unit_sphere : -in_unit_sphere; // In the same hemisphere as the normal
 }
+
+vec3 reflect(const vec3& v, const vec3& n) { return v - 2 * dot(v, n) * n; }
+
+
 #endif
