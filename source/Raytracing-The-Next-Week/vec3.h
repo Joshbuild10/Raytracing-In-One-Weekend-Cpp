@@ -23,10 +23,16 @@ public:
 	    {
 		    double r, g, b;
 	    };
+
+        struct
+        {
+            double component[3];
+        };
     };
 
     // Class Initialisers
     vec3() : x{ 0 }, y{ 0 }, z{ 0 } {}
+    vec3(double e0) : x{ e0 }, y{ e0 }, z{ e0 } {}
     vec3(double e0, double e1, double e2) : x{ e0 }, y{ e1 }, z{ e2 } {}
 
     vec3 operator-() const { return vec3(-x, -y, -z); }
