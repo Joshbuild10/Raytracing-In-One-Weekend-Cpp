@@ -2,6 +2,7 @@
 #define TEXTURE_H
 
 #include "utility.h"
+#include "perlin.h"
 
 class texture
 {
@@ -42,6 +43,23 @@ public:
         auto sines = sin(10 * p.x) * sin(10 * p.y) * sin(10 * p.z);
         if (sines < 0) { return odd->value(u, v, p); }
         else { return even->value(u, v, p); }
+    }
+};
+
+class noise_texture : public texture
+{
+public:
+    perlin noise;
+    double scale;
+
+    noise_texture() {}
+    noise_texture(double sc) : scale(sc) {}
+
+    virtual colour value(double u, double v, const point3& p) const override
+    {
+        //return colour(1, 1, 1) * 0.5 * (1.0 + noise.noise(scale * p));
+        //return colour(1, 1, 1) * noise.turb(scale * p);
+        return colour(1, 1, 1) * 0.5 * (1 + sin(scale * p.z + 10 * noise.turb(p)));
     }
 };
 
