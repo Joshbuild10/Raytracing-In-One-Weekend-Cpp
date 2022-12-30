@@ -11,6 +11,10 @@ class material
 {
 public:
     virtual bool scatter(const ray& r_in, const hit_record& rec, colour& attenuation, ray& scattered) const = 0;
+    virtual colour emitted(double u, double v, const point3& p) const
+	{
+        return colour(0, 0, 0);
+    }
 };
 
 class lambertian : public material
@@ -89,5 +93,25 @@ public:
         scattered = ray(rec.p, direction, r_in.time());
         return true;
     }
+};
+
+class diffuse_light : public material
+{
+public:
+    shared_ptr<texture> emit;
+
+    diffuse_light(shared_ptr<texture> a) : emit(a) {}
+    diffuse_light(colour c) : emit(make_shared<solid_colour>(c)) {}
+    
+    virtual bool scatter(const ray& r_in, const hit_record& rec, colour& attenuation, ray& scattered) const override
+	{
+        return false;
+    }
+
+    virtual colour emitted(double u, double v, const point3& p) const override
+	{
+        return emit->value(u, v, p);
+    }
+
 };
 #endif
